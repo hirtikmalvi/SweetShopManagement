@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using SweetShop.Api.Data;
+using SweetShop.Api.Repositories.Implementations;
+using SweetShop.Api.Repositories.Interfaces;
+using SweetShop.Api.Services.Implementations;
+using SweetShop.Api.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +16,12 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(buil
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+// Repositories
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+
+// Services
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 
