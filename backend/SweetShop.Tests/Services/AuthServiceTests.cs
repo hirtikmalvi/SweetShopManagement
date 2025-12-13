@@ -78,5 +78,36 @@ namespace SweetShop.Tests.Services
             Assert.Null(result.Data);
             Assert.Equal("Email already exists.", result.Message);
         }
+
+        [Fact]
+        public async Task Login_Success_WhenValidCredentials()
+        {
+            // Arrange
+            var request = new LoginRequestDTO
+            {
+                Email = "hirtik@gmail.com",
+                Password = "Hirtik@999"
+            };
+
+            var repoResponse = new User
+            {
+                UserId = 1,
+                Name = "Hirtik",
+                Email = "hirtik@gmail.com",
+                PasswordHash = "xyz12ABcdds",
+                IsAdmin = false
+            };
+
+            authRepo.Setup((r) => r.GetUserByEmail(It.IsAny<string>())).ReturnsAsync(repoResponse);
+            
+            // Act
+            var result = await authService.Login(request);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal("User Logged in successfully.", result.Message);
+        }
     }
 }
