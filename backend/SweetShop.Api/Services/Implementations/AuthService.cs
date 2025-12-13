@@ -16,6 +16,11 @@ namespace SweetShop.Api.Services.Implementations
         }
         public async Task<CustomResult<RegisterUserResponseDTO>> Register(RegisterUserRequestDTO request)
         {
+            if (await authRepository.EmailExists(request.Email))
+            {
+                return CustomResult<RegisterUserResponseDTO>.Fail("Email already exists.", 409);
+            }
+
             var userToRegister = new User();
             userToRegister.Name = request.Name;
             userToRegister.Email = request.Email;

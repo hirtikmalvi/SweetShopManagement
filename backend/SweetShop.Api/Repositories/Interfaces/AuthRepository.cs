@@ -21,6 +21,10 @@ namespace SweetShop.Api.Repositories.Interfaces
             await SaveChangesAsync();
             return userCreated.Entity;
         }
+        public async Task<bool> EmailExists(string email)
+        {
+            return await context.Users.AnyAsync(u => u.Email == email);
+        }
         private async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();

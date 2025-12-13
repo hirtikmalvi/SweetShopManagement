@@ -6,5 +6,6 @@ namespace SweetShop.Api.Repositories.Implementations
     public interface IAuthRepository
     {
         Task<User?> Register(User request);
+        Task<bool> EmailExists(string email);
     }
 }
