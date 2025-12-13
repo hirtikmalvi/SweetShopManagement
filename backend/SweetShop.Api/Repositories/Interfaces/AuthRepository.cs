@@ -25,6 +25,11 @@ namespace SweetShop.Api.Repositories.Interfaces
         {
             return await context.Users.AnyAsync(u => u.Email == email);
         }
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return user;
+        }
         private async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();

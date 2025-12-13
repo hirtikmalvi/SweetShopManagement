@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SweetShop.Api.DTOs.Login;
 using SweetShop.Api.DTOs.Register;
 using SweetShop.Api.Entities;
 using SweetShop.Api.Repositories.Implementations;
@@ -36,6 +37,15 @@ namespace SweetShop.Api.Services.Implementations
             };
 
             return CustomResult<RegisterUserResponseDTO>.Ok(registerUserResponse, "User Registered Successfully.");
+        }
+        public async Task<CustomResult<LoginResponseDTO>> Login(LoginRequestDTO request)
+        {
+            var user = await authRepository.GetUserByEmail(request.Email);
+
+            return CustomResult<LoginResponseDTO>.Ok(new LoginResponseDTO
+            {
+                Token = "this is token."
+            }, "User Logged in successfully.");
         }
     }
 }

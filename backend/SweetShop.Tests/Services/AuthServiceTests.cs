@@ -1,5 +1,6 @@
 ﻿using Moq;
 using Scalar.AspNetCore;
+using SweetShop.Api.DTOs.Login;
 using SweetShop.Api.DTOs.Register;
 using SweetShop.Api.Entities;
 using SweetShop.Api.Repositories.Implementations;
