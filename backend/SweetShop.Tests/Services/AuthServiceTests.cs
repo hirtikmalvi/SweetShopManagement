@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Microsoft.IdentityModel.JsonWebTokens;
+using Moq;
 using Scalar.AspNetCore;
 using SweetShop.Api.DTOs.Login;
 using SweetShop.Api.DTOs.Register;
@@ -162,6 +163,38 @@ namespace SweetShop.Tests.Services
             Assert.Equal(401, result.StatusCode);
             Assert.Null(result.Data);
             Assert.Equal("Invalid Credentials.", result.Message);
+        }
+
+        [Fact]
+        public async Task Login_ShouldReturnJwtToken_OnSuccess()
+        {
+            // Arrange
+            var request = new LoginRequestDTO
+            {
+                Email = "hitesh@gmail.com",
+                Password = "Hitesh@1234"
+            };
+
+            var repoResponse = new User
+            {
+                UserId = 1,
+                Name = "Hitesh",
+                Email = "hitesh@gmail.com",
+                PasswordHash = "AQAAAAIAAYagAAAAEMTxdtkM8/jeVUDvfoJQhUdUUDMc9l5S1TYg4xGbQFYqKtXVYGngDUWLZABJwA4etA==",
+                IsAdmin = true
+            };
+
+            authRepo.Setup((r) => r.GetUserByEmail(It.IsAny<string>())).ReturnsAsync(repoResponse);
+
+            // Act
+            var result = await authService.Login(request);
+            
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.True(new JsonWebTokenHandler().CanReadToken("dfd")); // Checks if the string is Jwt Token or not
+            Assert.Equal("User Logged in successfully.", result.Message);
         }
     }
 }
