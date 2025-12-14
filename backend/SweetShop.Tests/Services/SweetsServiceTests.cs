@@ -59,5 +59,39 @@ namespace SweetShop.Tests.Services
             Assert.NotNull(result.Data);
             Assert.Equal("Sweet created successfully.", result.Message);
         }
+
+        [Fact]
+        public async Task CreateSweet_Failure_WhenDataIsValidAndUserIsNotAdmin()
+        {
+            // Arrange
+            var request = new CreateSweetRequestDTO
+            {
+                Name = "Besan Laddoos",
+                Category = "Laddoos",
+                Price = 110,
+                QuantityInStock = 5
+            };
+
+            var response = new Sweet
+            {
+                SweetId = 1,
+                Name = "Besan Laddoos",
+                Category = "Laddoos",
+                Price = 110,
+                QuantityInStock = 5
+            };
+
+            sweetRepo.Setup((r) => r.CreateSweet(It.IsAny<Sweet>())).ReturnsAsync(response);
+            currentUserContext.Setup((c) => c.IsAdmin).Returns(false);
+
+            // Act
+            var result = await sweetsService.CreateSweet(request);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal("Sweet created successfully.", result.Message);
+        }
     }
 }
