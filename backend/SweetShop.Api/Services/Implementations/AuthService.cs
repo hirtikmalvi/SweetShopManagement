@@ -42,6 +42,11 @@ namespace SweetShop.Api.Services.Implementations
         {
             var user = await authRepository.GetUserByEmail(request.Email);
 
+            if (user == null)
+            {
+                return CustomResult<LoginResponseDTO>.Fail("Invalid Credentials.", 401);
+            }
+
             return CustomResult<LoginResponseDTO>.Ok(new LoginResponseDTO
             {
                 Token = "this is token."
