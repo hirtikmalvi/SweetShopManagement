@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Moq;
+using SweetShop.Api.DTOs.Sweet;
+using SweetShop.Api.Entities;
+using SweetShop.Api.Helpers;
+using SweetShop.Api.Repositories.Interfaces;
+using SweetShop.Api.Services.Implementations;
+using SweetShop.Api.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,6 +16,16 @@ namespace SweetShop.Tests.Services
 {
     public class SweetsServiceTests
     {
+        private readonly Mock<ISweetsRepository> sweetRepo;
+        private readonly ISweetsService sweetsService;
+        private readonly Mock<ICurrentUserContext> currentUserContext;
+        public SweetsServiceTests()
+        {
+            sweetRepo = new Mock<ISweetsRepository>();
+            currentUserContext = new Mock<ICurrentUserContext>();
+            sweetsService = new SweetsService(sweetRepo.Object, currentUserContext.Object);
+        }
+
         [Fact]
         public async Task CreateSweet_Success_WhenDataIsValidAndUserIsAdmin()
         {
@@ -30,16 +47,17 @@ namespace SweetShop.Tests.Services
                 QuantityInStock = 5
             };
 
-            sweetsRepo.Setup((r) => r.CreateSweet(It.Any<Sweet>())).ReturnsAsync(response);
+            sweetRepo.Setup((r) => r.CreateSweet(It.IsAny<Sweet>())).ReturnsAsync(response);
+            currentUserContext.Setup((c) => c.IsAdmin).Returns(true);
 
             // Act
             var result = await sweetsService.CreateSweet(request);
 
             // Assert
-            Assert.True(request.Success);
-            Assert.Equal(200, request.StatusCode);
-            Assert.NotNull(request.Data);
-            Assert.Equal("Sweet created successfully.", request.Message);
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal("Sweet created successfully.", result.Message);
         }
     }
 }

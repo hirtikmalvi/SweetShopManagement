@@ -23,8 +23,14 @@ namespace SweetShop.Api.Data
                     IsAdmin = true
                 }
             );
+
+            modelBuilder.Entity<Sweet>().HasKey(s => s.SweetId);
+            modelBuilder.Entity<Sweet>().Property(s => s.Price).HasColumnType("decimal(18,2)");
+            modelBuilder.Entity<Sweet>().HasCheckConstraint("CK_Sweet_QuantityInStock", "[QuantityInStock] >= 1");
+            modelBuilder.Entity<Sweet>().HasCheckConstraint("CK_Sweet_Price", "[Price] >= 0.0");
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Sweet> Sweets { get; set; }
     }
 }

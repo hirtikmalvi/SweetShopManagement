@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using SweetShop.Api.Data;
+using SweetShop.Api.Helpers;
 using SweetShop.Api.Repositories.Implementations;
 using SweetShop.Api.Repositories.Interfaces;
 using SweetShop.Api.Services.Implementations;
@@ -17,6 +18,8 @@ builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelS
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnectionString")));
 
+builder.Services.AddHttpContextAccessor();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -26,6 +29,7 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 // Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ICurrentUserContext, CurrentUserContext>();
 
 var app = builder.Build();
 
