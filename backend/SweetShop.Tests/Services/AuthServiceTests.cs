@@ -19,11 +19,13 @@ namespace SweetShop.Tests.Services
     {
         private readonly Mock<IAuthRepository> authRepo;
         private readonly IAuthService authService;
+        private readonly Mock<ITokenService> tokenService;
 
         public AuthServiceTests()
         {
             authRepo = new Mock<IAuthRepository>();
-            authService = new AuthService(authRepo.Object);
+            tokenService = new Mock<ITokenService>();
+            authService = new AuthService(authRepo.Object, tokenService.Object);
         }
 
         [Fact]
@@ -186,6 +188,8 @@ namespace SweetShop.Tests.Services
 
             authRepo.Setup((r) => r.GetUserByEmail(It.IsAny<string>())).ReturnsAsync(repoResponse);
 
+            tokenService.Setup((r) => r.GenerateJwtToken(It.IsAny<User>())).Returns("fakeheader.fakepayload.fakesignature");
+
             // Act
             var result = await authService.Login(request);
             
@@ -193,7 +197,7 @@ namespace SweetShop.Tests.Services
             Assert.True(result.Success);
             Assert.Equal(200, result.StatusCode);
             Assert.NotNull(result.Data);
-            Assert.True(new JsonWebTokenHandler().CanReadToken("dfd")); // Checks if the string is Jwt Token or not
+            Assert.True(new JsonWebTokenHandler().CanReadToken(result.Data.Token)); // Checks if the string is Jwt Token or not
             Assert.Equal("User Logged in successfully.", result.Message);
         }
     }

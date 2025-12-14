@@ -11,9 +11,11 @@ namespace SweetShop.Api.Services.Implementations
     public class AuthService : IAuthService
     {
         private readonly IAuthRepository authRepository;
-        public AuthService(IAuthRepository _authRepository)
+        private readonly ITokenService tokenService;
+        public AuthService(IAuthRepository _authRepository, ITokenService _tokenService)
         {
             authRepository = _authRepository;
+            tokenService = _tokenService;
         }
         public async Task<CustomResult<RegisterUserResponseDTO>> Register(RegisterUserRequestDTO request)
         {
@@ -52,9 +54,10 @@ namespace SweetShop.Api.Services.Implementations
                 return CustomResult<LoginResponseDTO>.Fail("Invalid Credentials.", 401);
             }
 
+            var token = tokenService.GenerateJwtToken(user);
             return CustomResult<LoginResponseDTO>.Ok(new LoginResponseDTO
             {
-                Token = "this is token."
+                Token = token
             }, "User Logged in successfully.");
         }
     }
