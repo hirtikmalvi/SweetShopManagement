@@ -4,7 +4,7 @@ using Scalar.AspNetCore;
 using SweetShop.Api.DTOs.Login;
 using SweetShop.Api.DTOs.Register;
 using SweetShop.Api.Entities;
-using SweetShop.Api.Repositories.Implementations;
+using SweetShop.Api.Repositories.Interfaces;
 using SweetShop.Api.Services.Implementations;
 using SweetShop.Api.Services.Interfaces;
 using System;
