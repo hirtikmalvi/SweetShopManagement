@@ -110,5 +110,27 @@ namespace SweetShop.Tests.Services
             Assert.NotNull(result.Data);
             Assert.Equal("User Logged in successfully.", result.Message);
         }
+
+        [Fact]
+        public async Task Login_Fail_WhenEmailNotExist()
+        {
+            // Arrange
+            var request = new LoginRequestDTO
+            {
+                Email = "hirtik@gmail.com",
+                Password = "Hirtik@999"
+            };
+
+            authRepo.Setup((r) => r.GetUserByEmail(It.IsAny<string>())).ReturnsAsync((User)null);
+
+            // Act
+            var result = await authService.Login(request);
+
+            // Assert
+            Assert.False(result.Success);
+            Assert.Equal(401, result.StatusCode);
+            Assert.Null(result.Data);
+            Assert.Equal("Invalid Credentials.", result.Message);
+        }
     }
 }
