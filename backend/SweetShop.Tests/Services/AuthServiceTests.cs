@@ -39,10 +39,10 @@ namespace SweetShop.Tests.Services
             var repoResponse = new User
             {
                 UserId = 1,
-                Name = "Hirtik",
-                Email = "hirtik@gmail.com",
-                PasswordHash = "xyz12ABcdds",
-                IsAdmin = false
+                Name = "Hitesh",
+                Email = "hitesh@gmail.com",
+                PasswordHash = "AQAAAAIAAYagAAAAEMTxdtkM8/jeVUDvfoJQhUdUUDMc9l5S1TYg4xGbQFYqKtXVYGngDUWLZABJwA4etA==",
+                IsAdmin = true
             };
 
             authRepo.Setup((r) => r.Register(It.IsAny<User>())).ReturnsAsync(repoResponse);
@@ -86,17 +86,17 @@ namespace SweetShop.Tests.Services
             // Arrange
             var request = new LoginRequestDTO
             {
-                Email = "hirtik@gmail.com",
-                Password = "Hirtik@999"
+                Email = "hitesh@gmail.com",
+                Password = "Hitesh@1234"
             };
 
             var repoResponse = new User
             {
                 UserId = 1,
-                Name = "Hirtik",
-                Email = "hirtik@gmail.com",
-                PasswordHash = "xyz12ABcdds",
-                IsAdmin = false
+                Name = "Hitesh",
+                Email = "hitesh@gmail.com",
+                PasswordHash = "AQAAAAIAAYagAAAAEMTxdtkM8/jeVUDvfoJQhUdUUDMc9l5S1TYg4xGbQFYqKtXVYGngDUWLZABJwA4etA==",
+                IsAdmin = true
             };
 
             authRepo.Setup((r) => r.GetUserByEmail(It.IsAny<string>())).ReturnsAsync(repoResponse);
@@ -148,7 +148,7 @@ namespace SweetShop.Tests.Services
                 UserId = 1,
                 Name = "Hirtik",
                 Email = "hirtik@gmail.com",
-                PasswordHash = "xyz12ABcdds",
+                PasswordHash = "AQAAAAIAAYagAAAAEMTxdtkM9/jeVUDvfoJQhUdUUDMc9l5S1TYg4xGbQFYqKtXVYGngDUWLZABJwA4etA==",
                 IsAdmin = false
             };
 

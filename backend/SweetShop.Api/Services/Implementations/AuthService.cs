@@ -46,6 +46,12 @@ namespace SweetShop.Api.Services.Implementations
             {
                 return CustomResult<LoginResponseDTO>.Fail("Invalid Credentials.", 401);
             }
+
+            if (new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password) == PasswordVerificationResult.Failed)
+            {
+                return CustomResult<LoginResponseDTO>.Fail("Invalid Credentials.", 401);
+            }
+
             return CustomResult<LoginResponseDTO>.Ok(new LoginResponseDTO
             {
                 Token = "this is token."
