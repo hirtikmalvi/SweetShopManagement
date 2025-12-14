@@ -93,5 +93,28 @@ namespace SweetShop.Tests.Services
             Assert.Null(result.Data);
             Assert.Equal("Sweet creation failed.", result.Message);
         }
+
+        [Fact]
+        public async Task GetAllSweets_ShouldReturnList_WhenSweetsExist()
+        {
+            // Arrange
+            var sweets = new List<Sweet>
+            {
+                new Sweet { SweetId = 1, Name = "Besan Ladoo", Category = "Ladoos", Price = 100 },
+                new Sweet { SweetId = 2, Name = "Kaju Barfi", Category = "Barfi", Price = 150 }
+            };
+
+            sweetRepo.Setup(r => r.GetAllSweets())
+                     .ReturnsAsync(sweets);
+
+            // Act
+            var result = await sweetsService.GetAllSweets();
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal(2, result.Data.Count);
+        }
     }
 }
