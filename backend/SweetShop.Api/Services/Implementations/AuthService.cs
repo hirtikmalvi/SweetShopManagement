@@ -46,7 +46,6 @@ namespace SweetShop.Api.Services.Implementations
             {
                 return CustomResult<LoginResponseDTO>.Fail("Invalid Credentials.", 401);
             }
-
             return CustomResult<LoginResponseDTO>.Ok(new LoginResponseDTO
             {
                 Token = "this is token."
