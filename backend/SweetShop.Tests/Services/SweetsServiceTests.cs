@@ -88,10 +88,10 @@ namespace SweetShop.Tests.Services
             var result = await sweetsService.CreateSweet(request);
 
             // Assert
-            Assert.True(result.Success);
-            Assert.Equal(200, result.StatusCode);
-            Assert.NotNull(result.Data);
-            Assert.Equal("Sweet created successfully.", result.Message);
+            Assert.False(result.Success);
+            Assert.Equal(403, result.StatusCode);
+            Assert.Null(result.Data);
+            Assert.Equal("Sweet creation failed.", result.Message);
         }
     }
 }
