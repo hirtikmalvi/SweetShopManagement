@@ -33,5 +33,13 @@ namespace SweetShop.Api.Controllers
             var result = await sweetsService.CreateSweet(request);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllSweets()
+        {
+            var result = await sweetsService.GetAllSweets();
+            return Ok(result);
+        }
     }
 }
