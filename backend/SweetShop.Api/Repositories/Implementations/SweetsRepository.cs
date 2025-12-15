@@ -1,4 +1,5 @@
-﻿using SweetShop.Api.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SweetShop.Api.Data;
 using SweetShop.Api.Entities;
 using SweetShop.Api.Repositories.Interfaces;
 
@@ -17,6 +18,12 @@ namespace SweetShop.Api.Repositories.Implementations
             await SaveChangesAsync();
             return sweet.Entity;
         }
+        async Task<List<Sweet>> ISweetsRepository.GetAllSweets()
+        {
+            var sweets = await context.Sweets.ToListAsync();
+            return sweets;
+        }
+
         private async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();

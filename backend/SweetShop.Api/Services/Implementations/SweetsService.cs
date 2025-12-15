@@ -35,5 +35,11 @@ namespace SweetShop.Api.Services.Implementations
 
             return CustomResult<Sweet>.Ok(createdSweet, "Sweet created successfully.");
         }
+
+        async Task<CustomResult<List<Sweet>>> ISweetsService.GetAllSweets()
+        {
+            var sweets = await sweetsRepo.GetAllSweets();
+            return CustomResult<List<Sweet>>.Ok(sweets,"Sweets fetched successfully.");
+        }
     }
 }
