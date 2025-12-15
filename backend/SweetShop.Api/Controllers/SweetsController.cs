@@ -41,5 +41,13 @@ namespace SweetShop.Api.Controllers
             var result = await sweetsService.GetAllSweets();
             return Ok(result);
         }
+
+        [HttpGet("search")]
+        [Authorize]
+        public async Task<IActionResult> SearchSweets([FromBody] SweetSearchRequestDTO request)
+        {
+            var result = await sweetsService.SearchSweets(request);
+            return Ok(result);
+        }
     }
 }
