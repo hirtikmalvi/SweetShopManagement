@@ -49,5 +49,18 @@ namespace SweetShop.Api.Controllers
             var result = await sweetsService.SearchSweets(request);
             return Ok(result);
         }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateSweet([FromRoute] int id, [FromBody] UpdateSweetRequestDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Where(ms => ms.Value.Errors.Count > 0).SelectMany(kvp => kvp.Value.Errors.Select(err => err.ErrorMessage)).ToList();
+                return Ok(CustomResult<Sweet>.Fail("Sweet can not be updated.", 400, errors));
+            }
+            var result = await sweetsService.UpdateSweet(id, request);
+            return Ok(result);
+        }
     }
 }
