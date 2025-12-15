@@ -350,5 +350,22 @@ namespace SweetShop.Tests.Services
             Assert.NotNull(result.Data);
             Assert.Equal("Sweet deleted successfully.", result.Message);
         }
+
+        [Fact]
+        public async Task DeleteSweet_ShouldFail_WhenSweetDoesNotExist()
+        {
+            // Arrange
+            sweetRepo.Setup((r) => r.SweetExist(It.IsAny<int>())).ReturnsAsync(false);
+            currentUserContext.Setup((c) => c.IsAdmin).Returns(true);
+
+            // Act
+            var result = await sweetsService.DeleteSweet(1);
+
+            // Assert
+            Assert.False(result.Success);
+            Assert.Equal(404, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal("Sweet can not be deleted.", result.Message);
+        }
     }
 }
