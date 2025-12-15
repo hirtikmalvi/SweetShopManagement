@@ -187,5 +187,33 @@ namespace SweetShop.Tests.Services
             Assert.Equal(200, result.StatusCode);
             Assert.Single(result.Data);
         }
+        
+        [Fact]
+        public async Task SearchSweets_ShouldReturnResults_WhenPriceInRange()
+        {
+            // Arrange
+            var request = new SweetSearchRequestDto
+            {
+                MinPrice = 50,
+                MaxPrice = 150
+            };
+
+            var repoResult = new List<Sweet>
+            {
+                new Sweet { SweetId = 1, Name = "Besan Ladoo", Category = "Ladoos", Price = 100 }
+            };
+
+            sweetRepo.Setup(r =>
+                r.SearchSweets(null, null, 50, 150))
+                .ReturnsAsync(repoResult);
+
+            // Act
+            var result = await sweetsService.SearchSweets(request);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.Single(result.Data);
+        }
     }
 }
