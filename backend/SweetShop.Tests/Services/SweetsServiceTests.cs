@@ -215,5 +215,33 @@ namespace SweetShop.Tests.Services
             Assert.Equal(200, result.StatusCode);
             Assert.Single(result.Data);
         }
+
+        [Fact]
+        public async Task SearchSweets_ShouldReturnEmptyList_WhenNoMatch()
+        {
+            // Arrange
+            var request = new SweetSearchRequestDto
+            {
+                Name = "Xyz",
+                Category = "Abc",
+                MinPrice = 784,
+                MaxPrice = 999
+            };
+
+            var repoResult = new List<Sweet>();
+
+            sweetRepo.Setup(r =>
+                r.SearchSweets("Xyz", "Abc", 784, 999))
+                .ReturnsAsync(repoResult);
+
+            // Act
+            var result = await sweetsService.SearchSweets(request);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.Equal(0, result.Data.Count);
+            Assert.Equal("No Sweets found.", result.Message);
+        }
     }
 }
