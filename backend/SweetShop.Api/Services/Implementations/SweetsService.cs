@@ -45,5 +45,15 @@ namespace SweetShop.Api.Services.Implementations
             }
             return CustomResult<List<Sweet>>.Ok(sweets,"Sweets fetched successfully.");
         }
+
+        async Task<CustomResult<List<Sweet>>> ISweetsService.SearchSweets(SweetSearchRequestDto request)
+        {
+            var sweets = await sweetsRepo.SearchSweets(request.Name, request.Category, request.MinPrice, request.MaxPrice);
+            if (sweets.Count == 0)
+            {
+                return CustomResult<List<Sweet>>.Ok(sweets, "No Sweets found.");
+            }
+            return CustomResult<List<Sweet>>.Ok(sweets, "Sweets fetched successfully.");
+        }
     }
 }

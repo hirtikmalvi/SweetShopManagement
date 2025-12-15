@@ -6,5 +6,6 @@ namespace SweetShop.Api.Repositories.Interfaces
     {
         Task<Sweet?> CreateSweet(Sweet sweet);
         Task<List<Sweet>> GetAllSweets();
+        Task<List<Sweet>> SearchSweets(string? name, string? category, decimal? minPrice, decimal? maxPrice);
     }
 }

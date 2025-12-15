@@ -138,7 +138,7 @@ namespace SweetShop.Tests.Services
         public async Task SearchSweets_ShouldReturnResults_WhenNameMatches()
         {
             // Arrange
-            var request = new SweetSearchRequestDTO
+            var request = new SweetSearchRequestDto
             {
                 Name = "Ladoo"
             };
