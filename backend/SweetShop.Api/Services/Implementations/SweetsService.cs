@@ -57,16 +57,16 @@ namespace SweetShop.Api.Services.Implementations
         }
         public async Task<CustomResult<Sweet>> UpdateSweet(int sweetId, UpdateSweetRequestDTO request)
         {
+            if (!currentUserContext.IsAdmin)
+            {
+                return CustomResult<Sweet>.Fail("Sweet can not be updated.", 403, ["Only Admins are allowed to update sweets."]);
+            }
+
             if (sweetId != request.SweetId)
             {
                 return CustomResult<Sweet>.Fail("Sweet can not be updated.", 400, [
                     "SweetId mismatch."
                 ]);
-            }
-
-            if (!currentUserContext.IsAdmin)
-            {
-                return CustomResult<Sweet>.Fail("Sweet can not be updated.", 403, ["Only Admins are allowed to update sweets."]);
             }
 
             if (!(await sweetsRepo.SweetExist(sweetId)))
