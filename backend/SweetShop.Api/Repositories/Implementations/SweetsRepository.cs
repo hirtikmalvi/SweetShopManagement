@@ -55,6 +55,13 @@ namespace SweetShop.Api.Repositories.Implementations
             await SaveChangesAsync();
             return updated.Entity;
         }
+        public async Task<bool> DeleteSweet(int sweetId)
+        {
+            var sweet = await context.Sweets.FirstOrDefaultAsync(s => s.SweetId == sweetId);
+            var updated = context.Sweets.Remove(sweet!);
+            await SaveChangesAsync();
+            return true;
+        }
 
         private async Task SaveChangesAsync()
         {

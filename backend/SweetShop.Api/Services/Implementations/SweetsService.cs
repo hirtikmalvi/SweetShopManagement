@@ -86,5 +86,20 @@ namespace SweetShop.Api.Services.Implementations
             var updated = await sweetsRepo.UpdateSweet(sweetToUpdate);
             return CustomResult<Sweet>.Ok(updated, "Sweet updated successfully.");
         }
+
+        public async Task<CustomResult<bool>> DeleteSweet(int sweetId)
+        {
+            if (!currentUserContext.IsAdmin)
+            {
+                return CustomResult<bool>.Fail("Sweet can not be deleted.", 403, ["Only Admins are allowed to delete sweets."]);
+            }
+            if (!(await sweetsRepo.SweetExist(sweetId)))
+            {
+                return CustomResult<bool>.Fail("Sweet can not be deleted.", 404, ["Sweet does not exist."]);
+            }
+
+            var deleted = await sweetsRepo.DeleteSweet(sweetId);
+            return CustomResult<bool>.Ok(deleted, "Sweet deleted successfully.");
+        }
     }
 }

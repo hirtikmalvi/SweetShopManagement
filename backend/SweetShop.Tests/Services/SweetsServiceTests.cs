@@ -345,9 +345,9 @@ namespace SweetShop.Tests.Services
             var result = await sweetsService.DeleteSweet(1);
 
             // Assert
-            Assert.False(result.Success);
+            Assert.True(result.Success);
             Assert.Equal(200, result.StatusCode);
-            Assert.Null(result.Data);
+            Assert.NotNull(result.Data);
             Assert.Equal("Sweet deleted successfully.", result.Message);
         }
     }
