@@ -133,5 +133,32 @@ namespace SweetShop.Tests.Services
             Assert.NotNull(result.Data);
             Assert.Equal(0, result.Data.Count);
         }
+
+        [Fact]
+        public async Task SearchSweets_ShouldReturnResults_WhenNameMatches()
+        {
+            // Arrange
+            var request = new SweetSearchRequestDTO
+            {
+                Name = "Ladoo"
+            };
+
+            var repoResult = new List<Sweet>
+            {
+                new Sweet { SweetId = 1, Name = "Besan Ladoo", Category = "Ladoos", Price = 100 }
+            };
+
+            sweetRepo.Setup(r =>
+                r.SearchSweets("Ladoo", null, null, null))
+                .ReturnsAsync(repoResult);
+
+            // Act
+            var result = await sweetsService.SearchSweets(request);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.Single(result.Data);
+        }
     }
 }
