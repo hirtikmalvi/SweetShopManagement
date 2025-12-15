@@ -46,7 +46,7 @@ namespace SweetShop.Api.Services.Implementations
             return CustomResult<List<Sweet>>.Ok(sweets,"Sweets fetched successfully.");
         }
 
-        async Task<CustomResult<List<Sweet>>> ISweetsService.SearchSweets(SweetSearchRequestDto request)
+        async Task<CustomResult<List<Sweet>>> ISweetsService.SearchSweets(SweetSearchRequestDTO request)
         {
             var sweets = await sweetsRepo.SearchSweets(request.Name, request.Category, request.MinPrice, request.MaxPrice);
             if (sweets.Count == 0)

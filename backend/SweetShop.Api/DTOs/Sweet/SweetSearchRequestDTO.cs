@@ -1,6 +1,6 @@
 ﻿namespace SweetShop.Api.DTOs.Sweet
 {
-    public class SweetSearchRequestDto
+    public class SweetSearchRequestDTO
     {
         public string? Name { get; set; }
         public string? Category { get; set; }

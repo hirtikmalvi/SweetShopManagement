@@ -8,6 +8,6 @@ namespace SweetShop.Api.Services.Interfaces
     {
         Task<CustomResult<Sweet>> CreateSweet(CreateSweetRequestDTO request);
         Task<CustomResult<List<Sweet>>> GetAllSweets();
-        Task<CustomResult<List<Sweet>>> SearchSweets(SweetSearchRequestDto request);
+        Task<CustomResult<List<Sweet>>> SearchSweets(SweetSearchRequestDTO request);
     }
 }
