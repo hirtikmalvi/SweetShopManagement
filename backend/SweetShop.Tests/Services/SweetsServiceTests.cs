@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using Azure;
+using Moq;
 using SweetShop.Api.DTOs.Sweet;
 using SweetShop.Api.Entities;
 using SweetShop.Api.Helpers;
@@ -242,6 +243,42 @@ namespace SweetShop.Tests.Services
             Assert.Equal(200, result.StatusCode);
             Assert.Equal(0, result.Data.Count);
             Assert.Equal("No Sweets found.", result.Message);
+        }
+
+        [Fact]
+        public async Task UpdateSweet_ShouldSucceed_WhenSweetExists()
+        {
+            // Arrange
+            var request = new UpdateSweetRequestDTO
+            {
+                SweetId = 1,
+                Name = "Xyz",
+                Category = "Abc",
+                Price = 784,
+                QuantityInStock = 10
+            };
+
+            var repoResult = new Sweet
+            {
+                SweetId = 1,
+                Name = "Besan Ladoo",
+                Category = "Ladoos",
+                Price = 100,
+                QuantityInStock = 50
+            };
+
+            sweetRepo.Setup((r) => r.SweetExist(It.IsAny<int>())).ReturnsAsync(true);
+            currentUserContext.Setup((c) => c.IsAdmin).Returns(true);
+            sweetRepo.Setup((r) => r.UpdateSweet(It.IsAny<Sweet>())).ReturnsAsync(repoResult);
+
+            // Act
+            var result = await sweetsService.UpdateSweet(request);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal("Sweet updated successfully.", result.Message);
         }
     }
 }
