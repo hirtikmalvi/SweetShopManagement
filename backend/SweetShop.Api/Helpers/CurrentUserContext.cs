@@ -9,9 +9,9 @@ namespace SweetShop.Api.Helpers
         {
             httpContextAccessor = _httpContextAccessor;
         }
-        public int UserId => Convert.ToInt32(httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier));
-        public string Email => Convert.ToString(httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email))!;
-        public string Role => Convert.ToString(httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Role))!;
-        public bool IsAdmin => Role == "Admin" ? true : false;
+        public int UserId => Convert.ToInt32(httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+        public string Email => httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
+        public string Role => httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Role)?.Value ?? string.Empty;
+        public bool IsAdmin => Role == "Admin";
     }
 }
