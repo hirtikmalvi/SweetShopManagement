@@ -62,5 +62,13 @@ namespace SweetShop.Api.Controllers
             var result = await sweetsService.UpdateSweet(id, request);
             return Ok(result);
         }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteSweet([FromRoute] int id)
+        {
+            var result = await sweetsService.DeleteSweet(id);
+            return Ok(result);
+        }
     }
 }
