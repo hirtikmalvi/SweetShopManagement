@@ -220,7 +220,7 @@ namespace SweetShop.Tests.Services
         public async Task SearchSweets_ShouldReturnEmptyList_WhenNoMatch()
         {
             // Arrange
-            var request = new SweetSearchRequestDto
+            var request = new SweetSearchRequestDTO
             {
                 Name = "Xyz",
                 Category = "Abc",
