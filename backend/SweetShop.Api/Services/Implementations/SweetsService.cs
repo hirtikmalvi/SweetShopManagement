@@ -39,6 +39,10 @@ namespace SweetShop.Api.Services.Implementations
         async Task<CustomResult<List<Sweet>>> ISweetsService.GetAllSweets()
         {
             var sweets = await sweetsRepo.GetAllSweets();
+            if (sweets.Count == 0)
+            {
+                return CustomResult<List<Sweet>>.Ok(sweets,"No sweets exist.");
+            }
             return CustomResult<List<Sweet>>.Ok(sweets,"Sweets fetched successfully.");
         }
     }
