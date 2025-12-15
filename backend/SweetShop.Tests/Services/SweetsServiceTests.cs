@@ -138,7 +138,7 @@ namespace SweetShop.Tests.Services
         public async Task SearchSweets_ShouldReturnResults_WhenNameMatches()
         {
             // Arrange
-            var request = new SweetSearchRequestDto
+            var request = new SweetSearchRequestDTO
             {
                 Name = "Ladoo"
             };
@@ -165,7 +165,7 @@ namespace SweetShop.Tests.Services
         public async Task SearchSweets_ShouldReturnResults_WhenCategoryMatches()
         {
             // Arrange
-            var request = new SweetSearchRequestDto
+            var request = new SweetSearchRequestDTO
             {
                 Category = "Ladoos"
             };
@@ -192,7 +192,7 @@ namespace SweetShop.Tests.Services
         public async Task SearchSweets_ShouldReturnResults_WhenPriceInRange()
         {
             // Arrange
-            var request = new SweetSearchRequestDto
+            var request = new SweetSearchRequestDTO
             {
                 MinPrice = 50,
                 MaxPrice = 150
