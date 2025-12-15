@@ -367,5 +367,21 @@ namespace SweetShop.Tests.Services
             Assert.NotNull(result.Data);
             Assert.Equal("Sweet can not be deleted.", result.Message);
         }
+
+        [Fact]
+        public async Task DeleteSweet_ShouldFail_WhenUserIsNotAdmin()
+        {
+            // Arrange
+            currentUserContext.Setup((c) => c.IsAdmin).Returns(false);
+
+            // Act
+            var result = await sweetsService.DeleteSweet(1);
+
+            // Assert
+            Assert.False(result.Data);
+            Assert.False(result.Success);
+            Assert.Equal(403, result.StatusCode);
+            Assert.Equal("Sweet can not be deleted.", result.Message);
+        }
     }
 }
