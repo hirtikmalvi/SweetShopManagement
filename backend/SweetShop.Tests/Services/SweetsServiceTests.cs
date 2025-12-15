@@ -280,5 +280,31 @@ namespace SweetShop.Tests.Services
             Assert.NotNull(result.Data);
             Assert.Equal("Sweet updated successfully.", result.Message);
         }
+
+        [Fact]
+        public async Task UpdateSweet_ShouldFail_WhenSweetDoesNotExist()
+        {
+            // Arrange
+            var request = new UpdateSweetRequestDTO
+            {
+                SweetId = 1,
+                Name = "Xyz",
+                Category = "Abc",
+                Price = 784,
+                QuantityInStock = 10
+            };
+
+            sweetRepo.Setup((r) => r.SweetExist(It.IsAny<int>())).ReturnsAsync(false);
+            currentUserContext.Setup((c) => c.IsAdmin).Returns(true);
+
+            // Act
+            var result = await sweetsService.UpdateSweet(1, request);
+
+            // Assert
+            Assert.False(result.Success);
+            Assert.Equal(404, result.StatusCode);
+            Assert.Null(result.Data);
+            Assert.Equal("Sweet can not be updated.", result.Message);
+        }
     }
 }
