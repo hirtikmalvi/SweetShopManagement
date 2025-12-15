@@ -116,5 +116,22 @@ namespace SweetShop.Tests.Services
             Assert.NotNull(result.Data);
             Assert.Equal(2, result.Data.Count);
         }
+
+        [Fact]
+        public async Task GetAllSweets_ReturnsEmptyList_WhenNoSweetsExist()
+        {
+            // Arrange
+            sweetRepo.Setup(r => r.GetAllSweets())
+                     .ReturnsAsync(new List<Sweet>());
+
+            // Act
+            var result = await sweetsService.GetAllSweets();
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal(0, result.Data.Count);
+        }
     }
 }
