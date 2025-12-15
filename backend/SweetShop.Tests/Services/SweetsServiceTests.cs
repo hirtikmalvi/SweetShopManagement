@@ -272,7 +272,7 @@ namespace SweetShop.Tests.Services
             sweetRepo.Setup((r) => r.UpdateSweet(It.IsAny<Sweet>())).ReturnsAsync(repoResult);
 
             // Act
-            var result = await sweetsService.UpdateSweet(request);
+            var result = await sweetsService.UpdateSweet(1, request);
 
             // Assert
             Assert.True(result.Success);

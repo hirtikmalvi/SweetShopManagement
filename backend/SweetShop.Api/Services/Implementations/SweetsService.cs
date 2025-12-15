@@ -55,5 +55,36 @@ namespace SweetShop.Api.Services.Implementations
             }
             return CustomResult<List<Sweet>>.Ok(sweets, "Sweets fetched successfully.");
         }
+        public async Task<CustomResult<Sweet>> UpdateSweet(int sweetId, UpdateSweetRequestDTO request)
+        {
+            if (sweetId != request.SweetId)
+            {
+                return CustomResult<Sweet>.Fail("Sweet can not be updated.", 400, [
+                    "SweetId mismatch."
+                ]);
+            }
+
+            if (!currentUserContext.IsAdmin)
+            {
+                return CustomResult<Sweet>.Fail("Sweet can not be updated.", 403, ["Only Admins are allowed to update sweets."]);
+            }
+
+            if (!(await sweetsRepo.SweetExist(sweetId)))
+            {
+                return CustomResult<Sweet>.Fail("Sweet can not be updated.", 404, ["Sweet does not exist."]);
+            }
+
+            var sweetToUpdate = new Sweet
+            {
+                SweetId = request.SweetId,
+                Name = request.Name,
+                Category = request.Category,
+                Price = request.Price,
+                QuantityInStock = request.QuantityInStock
+            };
+
+            var updated = await sweetsRepo.UpdateSweet(sweetToUpdate);
+            return CustomResult<Sweet>.Ok(updated, "Sweet updated successfully.");
+        }
     }
 }

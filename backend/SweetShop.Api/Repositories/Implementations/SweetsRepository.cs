@@ -45,6 +45,17 @@ namespace SweetShop.Api.Repositories.Implementations
             }
             return await query.ToListAsync();
         }
+        public async Task<bool> SweetExist(int sweetId)
+        {
+            return await context.Sweets.AnyAsync(s => s.SweetId == sweetId);
+        }
+        public async Task<Sweet> UpdateSweet(Sweet request)
+        {
+            var updated = context.Sweets.Update(request);
+            await SaveChangesAsync();
+            return updated.Entity;
+        }
+
         private async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
