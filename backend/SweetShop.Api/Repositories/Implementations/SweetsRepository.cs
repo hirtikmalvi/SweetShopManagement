@@ -63,6 +63,12 @@ namespace SweetShop.Api.Repositories.Implementations
             return true;
         }
 
+        public async Task<Sweet?> GetSweetById(int sweetId)
+        {
+            var sweet = await context.Sweets.FirstOrDefaultAsync(s => s.SweetId == sweetId);
+            return sweet;
+        }
+
         private async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();

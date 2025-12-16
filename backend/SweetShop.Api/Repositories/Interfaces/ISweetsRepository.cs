@@ -11,5 +11,6 @@ namespace SweetShop.Api.Repositories.Interfaces
         Task<bool> SweetExist(int sweetId);
         Task<Sweet> UpdateSweet(Sweet request);
         Task<bool> DeleteSweet(int sweetId);
+        Task<Sweet?> GetSweetById(int sweetId);
     }
 }

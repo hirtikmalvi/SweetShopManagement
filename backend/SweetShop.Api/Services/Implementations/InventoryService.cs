@@ -25,6 +25,14 @@ namespace SweetShop.Api.Services.Implementations
                     ["SweetId mismatch."]
                 );
             }
+
+            var sweet = await sweetsRepo.GetSweetById(sweetId);
+
+            if (sweet == null)
+            {
+                return CustomResult<Sweet>.Fail("Sweet could not be purchased.", 404, ["Sweet not found"]);
+            }
+
             return CustomResult<Sweet>.Ok((Sweet)null);
 
         }

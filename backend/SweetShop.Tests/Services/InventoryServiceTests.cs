@@ -43,5 +43,30 @@ namespace SweetShop.Tests.Services
             Assert.Null(result.Data);
             Assert.Equal("SweetId mismatch.", result.Message);
         }
+
+        [Fact]
+        public async Task UpdateSweet_ShouldFail_WhenSweetDoesNotExist()
+        {
+            // Arrange
+            var sweetId = 1;
+
+            var request = new UpdateSweetStockRequestDTO
+            {
+                SweetId = 1,
+                QuantityInStock = 99
+            };
+
+            sweetsRepo.Setup(r => r.GetSweetById(sweetId))
+                         .ReturnsAsync((Sweet)null);
+
+            // Act
+            var result = await inventoryService.PurchaseSweet(sweetId, request);
+
+            // Assert
+            Assert.False(result.Success);
+            Assert.Equal(404, result.StatusCode);
+            Assert.Equal("Sweet could not be purchased.", result.Message);
+        }
+
     }
 }
