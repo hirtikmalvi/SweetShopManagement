@@ -38,8 +38,10 @@ namespace SweetShop.Api.Services.Implementations
                 return CustomResult<Sweet>.Fail("Sweet could not be purchased.", 400, ["Sweets are out of stock."]);
             }
 
+            sweet.QuantityInStock -= request.QuantityInStock; 
+
             var updated = await sweetsRepo.UpdateSweet(sweet);
-            return CustomResult<Sweet>.Ok((Sweet)null, "Sweet purchased successfully.");
+            return CustomResult<Sweet>.Ok(updated, "Sweet purchased successfully.");
 
         }
     }

@@ -101,5 +101,51 @@ namespace SweetShop.Tests.Services
             Assert.Null(result.Data);
             Assert.Equal("Sweet could not be purchased.", result.Message);
         }
+
+        [Fact]
+        public async Task UpdateSweet_ShouldSucceed_WhenDataIsValid()
+        {
+            // Arrange
+            var sweetId = 1;
+
+            var request = new UpdateSweetStockRequestDTO
+            {
+                SweetId = 1,
+                QuantityInStock = 45
+            };
+
+            var existingSweet = new Sweet
+            {
+                SweetId = 1,
+                Name = "Besan Ladoo",
+                Category = "Ladoo",
+                Price = 100,
+                QuantityInStock = 50,
+            };
+
+            var sweetToReturnAfterPurchase = new Sweet
+            {
+                SweetId = 1,
+                Name = "Besan Ladoo",
+                Category = "Ladoo",
+                Price = 100,
+                QuantityInStock = 5,
+            };
+
+            sweetsRepo.Setup(r => r.GetSweetById(sweetId))
+                     .ReturnsAsync(existingSweet);
+
+            sweetsRepo.Setup(r => r.UpdateSweet(It.IsAny<Sweet>()))
+                     .ReturnsAsync(sweetToReturnAfterPurchase);
+
+            // Act
+            var result = await inventoryService.PurchaseSweet(sweetId, request);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal("Sweet purchased successfully.", result.Message);
+        }
     }
 }
