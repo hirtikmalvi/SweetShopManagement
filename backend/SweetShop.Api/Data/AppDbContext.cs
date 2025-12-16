@@ -26,7 +26,7 @@ namespace SweetShop.Api.Data
 
             modelBuilder.Entity<Sweet>().HasKey(s => s.SweetId);
             modelBuilder.Entity<Sweet>().Property(s => s.Price).HasColumnType("decimal(18,2)");
-            modelBuilder.Entity<Sweet>().HasCheckConstraint("CK_Sweet_QuantityInStock", "[QuantityInStock] >= 1");
+            modelBuilder.Entity<Sweet>().HasCheckConstraint("CK_Sweet_QuantityInStock", "[QuantityInStock] >= 0");
             modelBuilder.Entity<Sweet>().HasCheckConstraint("CK_Sweet_Price", "[Price] >= 0.0");
         }
 
