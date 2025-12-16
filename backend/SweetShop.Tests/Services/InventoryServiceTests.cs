@@ -1,6 +1,7 @@
 ﻿using Moq;
 using SweetShop.Api.DTOs.Sweet;
 using SweetShop.Api.Entities;
+using SweetShop.Api.Helpers;
 using SweetShop.Api.Repositories.Interfaces;
 using SweetShop.Api.Services.Implementations;
 using SweetShop.Api.Services.Interfaces;
@@ -15,11 +16,13 @@ namespace SweetShop.Tests.Services
     public class InventoryServiceTests
     {
         private readonly Mock<ISweetsRepository> sweetsRepo;
+        private readonly Mock<ICurrentUserContext> currentUserContext;
         private readonly IInventoryService inventoryService;
         public InventoryServiceTests()
         {
             sweetsRepo = new Mock<ISweetsRepository>();
-            inventoryService = new InventoryService(sweetsRepo.Object);
+            currentUserContext = new Mock<ICurrentUserContext>();
+            inventoryService = new InventoryService(sweetsRepo.Object, currentUserContext.Object);
         }
 
         [Fact]
@@ -145,6 +148,26 @@ namespace SweetShop.Tests.Services
             Assert.Equal(200, result.StatusCode);
             Assert.NotNull(result.Data);
             Assert.Equal("Sweet purchased successfully.", result.Message);
+        }
+
+        [Fact]
+        public async Task RestockSweet_ShouldFail_WhenRouteIdDoesNotMatchRequestId()
+        {
+            // Arrange
+            var routeSweetId = 1;
+            var request = new UpdateSweetStockRequestDTO
+            {
+                SweetId = 2,
+                QuantityInStock = 10
+            };
+
+            // Act
+            var result = await inventoryService.RestockSweet(routeSweetId, request);
+
+            // Assert
+            Assert.False(result.Success);
+            Assert.Equal(400, result.StatusCode);
+            Assert.Null(result.Data);
         }
     }
 }

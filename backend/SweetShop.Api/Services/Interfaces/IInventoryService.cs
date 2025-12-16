@@ -7,5 +7,6 @@ namespace SweetShop.Api.Services.Interfaces
     public interface IInventoryService
     {
         Task<CustomResult<Sweet>> PurchaseSweet(int sweetId, UpdateSweetStockRequestDTO request);
+        Task<CustomResult<Sweet>> RestockSweet(int sweetId, UpdateSweetStockRequestDTO request);
     }
 }
