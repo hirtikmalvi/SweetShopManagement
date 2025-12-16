@@ -15,10 +15,12 @@ namespace SweetShop.Api.Controllers
     public class SweetsController : ControllerBase
     {
         private readonly ISweetsService sweetsService;
+        private readonly IInventoryService inventoryService;
 
-        public SweetsController(ISweetsService _sweetsService)
+        public SweetsController(ISweetsService _sweetsService, IInventoryService _inventoryService)
         {
             sweetsService = _sweetsService;
+            inventoryService = _inventoryService;
         }
 
         [HttpPost]
@@ -68,6 +70,19 @@ namespace SweetShop.Api.Controllers
         public async Task<IActionResult> DeleteSweet([FromRoute] int id)
         {
             var result = await sweetsService.DeleteSweet(id);
+            return Ok(result);
+        }
+
+        [HttpPost("{id}/purchase")]
+        [Authorize]
+        public async Task<IActionResult> PurchaseSweet([FromRoute] int id, [FromBody] UpdateSweetStockRequestDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Where(ms => ms.Value.Errors.Count > 0).SelectMany(kvp => kvp.Value.Errors.Select(err => err.ErrorMessage)).ToList();
+                return Ok(CustomResult<Sweet>.Fail("Sweet can not be purchased.", 400, errors));
+            }
+            var result = await inventoryService.PurchaseSweet(id, request);
             return Ok(result);
         }
     }

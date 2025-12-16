@@ -40,8 +40,8 @@ namespace SweetShop.Api.Services.Implementations
 
             sweet.QuantityInStock -= request.QuantityInStock; 
 
-            var updated = await sweetsRepo.UpdateSweet(sweet);
-            return CustomResult<Sweet>.Ok(updated, "Sweet purchased successfully.");
+            await sweetsRepo.UpdateSweet();
+            return CustomResult<Sweet>.Ok(sweet, "Sweet purchased successfully.");
 
         }
     }

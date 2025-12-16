@@ -79,6 +79,7 @@ builder.Services.AddScoped<ISweetsRepository, SweetsRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISweetsService, SweetsService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddScoped<ICurrentUserContext, CurrentUserContext>();
 
 var app = builder.Build();
