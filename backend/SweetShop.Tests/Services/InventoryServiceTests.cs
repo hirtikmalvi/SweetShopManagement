@@ -240,5 +240,41 @@ namespace SweetShop.Tests.Services
 
             Assert.Equal(30, result.Data.QuantityInStock);
         }
+
+        [Fact]
+        public async Task RestockSweet_ShouldSucceed_WithValidQuantity()
+        {
+            // Arrange
+            var sweet = new Sweet
+            {
+                SweetId = 1,
+                QuantityInStock = 50,
+                Name = "Besan Ladoo",
+                Category = "Ladoo",
+                Price = 50
+            };
+
+            var request = new UpdateSweetStockRequestDTO
+            {
+                SweetId = 1,
+                QuantityInStock = 25
+            };
+
+            currentUserContext.Setup(c => c.IsAdmin).Returns(true);
+
+            sweetsRepo.Setup(r => r.GetSweetById(1))
+                      .ReturnsAsync(sweet);
+
+            sweetsRepo.Setup(r => r.UpdateSweet());
+
+            // Act
+            var result = await inventoryService.RestockSweet(1, request);
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.Equal(75, result.Data.QuantityInStock);
+            Assert.Equal("Sweet restocked successfully.", result.Message);
+        }
     }
 }
