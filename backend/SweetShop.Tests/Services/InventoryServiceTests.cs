@@ -169,5 +169,26 @@ namespace SweetShop.Tests.Services
             Assert.Equal(400, result.StatusCode);
             Assert.Null(result.Data);
         }
+        [Fact]
+        public async Task RestockSweet_ShouldFail_WhenUserIsNotAdmin()
+        {
+            // Arrange
+            var request = new UpdateSweetStockRequestDTO
+            {
+                SweetId = 1,
+                QuantityInStock = 10
+            };
+
+            currentUserContext.Setup(c => c.IsAdmin).Returns(false);
+
+            // Act
+            var result = await inventoryService.RestockSweet(1, request);
+
+            // Assert
+            Assert.False(result.Success);
+            Assert.Equal(403, result.StatusCode);
+            Assert.Null(result.Data);
+        }
+
     }
 }

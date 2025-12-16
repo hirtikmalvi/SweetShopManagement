@@ -57,6 +57,15 @@ namespace SweetShop.Api.Services.Implementations
                     ["SweetId mismatch."]
                 );
             }
+            if (!currentUserContext.IsAdmin)
+            {
+                return CustomResult<Sweet>.Fail(
+                    "Sweet could not be restocked.",
+                    403,
+                    ["Only admins are allowed to restock sweets."]
+                );
+            }
+
             return CustomResult<Sweet>.Ok((Sweet)null, "Sweet restocked successfully.");
         }
     }
