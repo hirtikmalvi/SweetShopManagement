@@ -255,7 +255,6 @@ namespace SweetShop.Tests.Services
                 Name = "Xyz",
                 Category = "Abc",
                 Price = 784,
-                QuantityInStock = 10
             };
 
             var repoResult = new Sweet
@@ -267,9 +266,9 @@ namespace SweetShop.Tests.Services
                 QuantityInStock = 50
             };
 
-            sweetRepo.Setup((r) => r.SweetExist(It.IsAny<int>())).ReturnsAsync(true);
+            sweetRepo.Setup((r) => r.GetSweetById(It.IsAny<int>())).ReturnsAsync(repoResult);
             currentUserContext.Setup((c) => c.IsAdmin).Returns(true);
-            sweetRepo.Setup((r) => r.UpdateSweet(It.IsAny<Sweet>())).ReturnsAsync(repoResult);
+            sweetRepo.Setup((r) => r.UpdateSweet());
 
             // Act
             var result = await sweetsService.UpdateSweet(1, request);
@@ -291,7 +290,6 @@ namespace SweetShop.Tests.Services
                 Name = "Xyz",
                 Category = "Abc",
                 Price = 784,
-                QuantityInStock = 10
             };
 
             sweetRepo.Setup((r) => r.SweetExist(It.IsAny<int>())).ReturnsAsync(false);
@@ -317,10 +315,8 @@ namespace SweetShop.Tests.Services
                 Name = "Xyz",
                 Category = "Abc",
                 Price = 784,
-                QuantityInStock = 10
             };
 
-            sweetRepo.Setup((r) => r.SweetExist(It.IsAny<int>())).ReturnsAsync(true);
             currentUserContext.Setup((c) => c.IsAdmin).Returns(false);
 
             // Act

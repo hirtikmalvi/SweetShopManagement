@@ -135,8 +135,7 @@ namespace SweetShop.Tests.Services
             sweetsRepo.Setup(r => r.GetSweetById(sweetId))
                      .ReturnsAsync(existingSweet);
 
-            sweetsRepo.Setup(r => r.UpdateSweet(It.IsAny<Sweet>()))
-                     .ReturnsAsync(sweetToReturnAfterPurchase);
+            sweetsRepo.Setup(r => r.UpdateSweet());
 
             // Act
             var result = await inventoryService.PurchaseSweet(sweetId, request);

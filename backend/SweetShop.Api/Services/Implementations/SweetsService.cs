@@ -69,22 +69,19 @@ namespace SweetShop.Api.Services.Implementations
                 ]);
             }
 
-            if (!(await sweetsRepo.SweetExist(sweetId)))
+            var sweet = await sweetsRepo.GetSweetById(sweetId);
+
+            if (sweet == null)
             {
                 return CustomResult<Sweet>.Fail("Sweet can not be updated.", 404, ["Sweet does not exist."]);
             }
 
-            var sweetToUpdate = new Sweet
-            {
-                SweetId = request.SweetId,
-                Name = request.Name,
-                Category = request.Category,
-                Price = request.Price,
-                QuantityInStock = request.QuantityInStock
-            };
+            sweet.Name = request.Name;
+            sweet.Category = request.Category;
+            sweet.Price = request.Price;
 
-            var updated = await sweetsRepo.UpdateSweet(sweetToUpdate);
-            return CustomResult<Sweet>.Ok(updated, "Sweet updated successfully.");
+            await sweetsRepo.UpdateSweet();
+            return CustomResult<Sweet>.Ok(sweet, "Sweet updated successfully.");
         }
 
         public async Task<CustomResult<bool>> DeleteSweet(int sweetId)

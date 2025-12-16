@@ -49,11 +49,9 @@ namespace SweetShop.Api.Repositories.Implementations
         {
             return await context.Sweets.AnyAsync(s => s.SweetId == sweetId);
         }
-        public async Task<Sweet> UpdateSweet(Sweet request)
+        public async Task UpdateSweet()
         {
-            var updated = context.Sweets.Update(request);
             await SaveChangesAsync();
-            return updated.Entity;
         }
         public async Task<bool> DeleteSweet(int sweetId)
         {
