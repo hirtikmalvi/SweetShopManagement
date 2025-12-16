@@ -23,7 +23,7 @@ namespace SweetShop.Tests.Services
         }
 
         [Fact]
-        public async Task UpdateSweet_ShouldFail_WhenRouteIdDoesNotMatchRequestId()
+        public async Task PurchaseSweet_ShouldFail_WhenRouteIdDoesNotMatchRequestId()
         {
             // Arrange
             var routeSweetId = 1;
@@ -41,11 +41,11 @@ namespace SweetShop.Tests.Services
             Assert.False(result.Success);
             Assert.Equal(400, result.StatusCode);
             Assert.Null(result.Data);
-            Assert.Equal("SweetId mismatch.", result.Message);
+            Assert.Equal("Sweet could not be purchased.", result.Message);
         }
 
         [Fact]
-        public async Task UpdateSweet_ShouldFail_WhenSweetDoesNotExist()
+        public async Task PurchaseSweet_ShouldFail_WhenSweetDoesNotExist()
         {
             // Arrange
             var sweetId = 1;
@@ -68,5 +68,38 @@ namespace SweetShop.Tests.Services
             Assert.Equal("Sweet could not be purchased.", result.Message);
         }
 
+        [Fact]
+        public async Task PurchaseSweet_ShouldFail_WhenStockIsNotEnough()
+        {
+            // Arrange
+            var sweetId = 1;
+
+            var request = new UpdateSweetStockRequestDTO
+            {
+                SweetId = 1,
+                QuantityInStock = 45
+            };
+
+            var existingSweet = new Sweet
+            {
+                SweetId = 1,
+                Name = "Besan Ladoo",
+                Category = "Ladoo",
+                Price = 100,
+                QuantityInStock = 40,
+            };
+
+            sweetsRepo.Setup(r => r.GetSweetById(sweetId))
+                     .ReturnsAsync(existingSweet);
+
+            // Act
+            var result = await inventoryService.PurchaseSweet(sweetId, request);
+
+            // Assert
+            Assert.False(result.Success);
+            Assert.Equal(400, result.StatusCode);
+            Assert.Null(result.Data);
+            Assert.Equal("Sweet could not be purchased.", result.Message);
+        }
     }
 }

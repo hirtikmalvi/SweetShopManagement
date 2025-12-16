@@ -33,7 +33,13 @@ namespace SweetShop.Api.Services.Implementations
                 return CustomResult<Sweet>.Fail("Sweet could not be purchased.", 404, ["Sweet not found"]);
             }
 
-            return CustomResult<Sweet>.Ok((Sweet)null);
+            if (request.QuantityInStock > sweet.QuantityInStock)
+            {
+                return CustomResult<Sweet>.Fail("Sweet could not be purchased.", 400, ["Sweets are out of stock."]);
+            }
+
+            var updated = await sweetsRepo.UpdateSweet(sweet);
+            return CustomResult<Sweet>.Ok((Sweet)null, "Sweet purchased successfully.");
 
         }
     }
