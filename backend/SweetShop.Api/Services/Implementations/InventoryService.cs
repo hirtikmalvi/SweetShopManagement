@@ -66,6 +66,15 @@ namespace SweetShop.Api.Services.Implementations
                 );
             }
 
+            if (request.QuantityInStock <= 0)
+            {
+                return CustomResult<Sweet>.Fail(
+                    "Sweet could not be restocked.",
+                    400,
+                    ["Quantity must be greater than zero."]
+                );
+            }
+
             var sweet = await sweetsRepo.GetSweetById(sweetId);
 
             if (sweet == null)
@@ -76,7 +85,12 @@ namespace SweetShop.Api.Services.Implementations
                     ["Sweet not found."]
                 );
             }
-            return CustomResult<Sweet>.Ok((Sweet)null, "Sweet restocked successfully.");
+
+            sweet.QuantityInStock += request.QuantityInStock;
+
+            await sweetsRepo.UpdateSweet();
+
+            return CustomResult<Sweet>.Ok(sweet, "Sweet restocked successfully.");
         }
     }
 }

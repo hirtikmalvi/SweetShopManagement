@@ -210,5 +210,35 @@ namespace SweetShop.Tests.Services
             Assert.Equal(404, result.StatusCode);
             Assert.Null(result.Data);
         }
+
+        [Fact]
+        public async Task RestockSweet_ShouldIncreaseQuantity()
+        {
+            var sweet = new Sweet
+            {
+                SweetId = 1,
+                QuantityInStock = 20,
+                Name = "Besan Ladoo",
+                Category = "Ladoo",
+                Price = 50
+            };
+
+            var request = new UpdateSweetStockRequestDTO
+            {
+                SweetId = 1,
+                QuantityInStock = 10
+            };
+
+            currentUserContext.Setup(c => c.IsAdmin).Returns(true);
+
+            sweetsRepo.Setup(r => r.GetSweetById(1))
+                      .ReturnsAsync(sweet);
+
+            sweetsRepo.Setup(r => r.UpdateSweet());
+
+            var result = await inventoryService.RestockSweet(1, request);
+
+            Assert.Equal(30, result.Data.QuantityInStock);
+        }
     }
 }
