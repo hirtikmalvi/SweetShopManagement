@@ -16,8 +16,5 @@ namespace SweetShop.Api.DTOs.Sweet
         [Required]
         [Range(0.0, double.MaxValue, ErrorMessage = "Price must be atleast 0.")]
         public decimal Price { get; set; }
-        [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be atleast 1.")]
-        public int QuantityInStock { get; set; }
     }
 }
