@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using SweetShop.Api.Data;
 using SweetShop.Api.Helpers;
+using SweetShop.Api.Middlware;
 using SweetShop.Api.Repositories.Implementations;
 using SweetShop.Api.Repositories.Interfaces;
 using SweetShop.Api.Services.Implementations;
@@ -91,8 +92,11 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
