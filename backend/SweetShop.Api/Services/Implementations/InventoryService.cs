@@ -66,6 +66,16 @@ namespace SweetShop.Api.Services.Implementations
                 );
             }
 
+            var sweet = await sweetsRepo.GetSweetById(sweetId);
+
+            if (sweet == null)
+            {
+                return CustomResult<Sweet>.Fail(
+                    "Sweet could not be restocked.",
+                    404,
+                    ["Sweet not found."]
+                );
+            }
             return CustomResult<Sweet>.Ok((Sweet)null, "Sweet restocked successfully.");
         }
     }

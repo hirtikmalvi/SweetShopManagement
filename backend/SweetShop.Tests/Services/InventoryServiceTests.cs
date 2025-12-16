@@ -190,5 +190,25 @@ namespace SweetShop.Tests.Services
             Assert.Null(result.Data);
         }
 
+        [Fact]
+        public async Task RestockSweet_ShouldFail_WhenSweetDoesNotExist()
+        {
+            var request = new UpdateSweetStockRequestDTO
+            {
+                SweetId = 1,
+                QuantityInStock = 10
+            };
+
+            currentUserContext.Setup(c => c.IsAdmin).Returns(true);
+
+            sweetsRepo.Setup(r => r.GetSweetById(1))
+                      .ReturnsAsync((Sweet)null);
+
+            var result = await inventoryService.RestockSweet(1, request);
+
+            Assert.False(result.Success);
+            Assert.Equal(404, result.StatusCode);
+            Assert.Null(result.Data);
+        }
     }
 }
