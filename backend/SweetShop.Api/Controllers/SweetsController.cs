@@ -85,5 +85,18 @@ namespace SweetShop.Api.Controllers
             var result = await inventoryService.PurchaseSweet(id, request);
             return Ok(result);
         }
+
+        [HttpPost("{id}/restock")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RestockSweet([FromRoute] int id, [FromBody] UpdateSweetStockRequestDTO request)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Where(ms => ms.Value.Errors.Count > 0).SelectMany(kvp => kvp.Value.Errors.Select(err => err.ErrorMessage)).ToList();
+                return Ok(CustomResult<Sweet>.Fail("Sweet can not be restocked.", 400, errors));
+            }
+            var result = await inventoryService.RestockSweet(id, request);
+            return Ok(result);
+        }
     }
 }
