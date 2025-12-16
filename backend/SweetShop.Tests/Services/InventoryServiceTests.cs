@@ -18,9 +18,10 @@ namespace SweetShop.Tests.Services
         private readonly IInventoryService inventoryService;
         public InventoryServiceTests()
         {
-            sweetsrepo = new Mock<ISweetsRepository>();
-            inventoryService = new IInventoryService(sweetsRepo.Object);
+            sweetsRepo = new Mock<ISweetsRepository>();
+            inventoryService = new InventoryService(sweetsRepo.Object);
         }
+
         [Fact]
         public async Task UpdateSweet_ShouldFail_WhenRouteIdDoesNotMatchRequestId()
         {
