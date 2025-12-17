@@ -183,6 +183,24 @@ The project strictly follows **Red → Green → Refactor**.
 
 ---
 
+You’re absolutely right 👍 — git clone must be the very first step, especially for reviewers who are not from a .NET background.
+
+Below is a clean, corrected, copy-paste–ready section that you can replace your existing “Running the Project” section with.
+It flows logically and assumes zero prior knowledge.
+
+## 0️⃣ Clone the Repository
+### What this does?
+
+Downloads the project source code to your local machine.
+
+```
+git clone https://github.com/hirtikmalvi/SweetShopManagement.git
+cd SweetShopManagementSystem
+```
+
+
+📌 Ensure you are inside the project root before continuing.
+
 ## 1️⃣ Install .NET SDK (Required)
 
 ### What is this?
