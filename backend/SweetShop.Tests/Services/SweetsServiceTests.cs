@@ -396,5 +396,28 @@ namespace SweetShop.Tests.Services
             Assert.NotNull(result.Data);
             Assert.Equal(0, result.Data.Count);
         }
+
+        [Fact]
+        public async Task GetSweetsWithMinimumQty_ReturnsSweetsList_WhenSuchSweetsFound()
+        {
+            // Arrange
+            var sweets = new List<Sweet>
+            {
+                new Sweet { SweetId = 2, Name = "Kaju Barfi", Category = "Barfi", Price = 100, QuantityInStock = 2 },
+                new Sweet { SweetId = 3, Name = "Mawa Penda", Category = "Penda", Price = 70, QuantityInStock = 2 }
+            };
+
+            sweetRepo.Setup(r => r.GetSweetsWithMinimumQty())
+                     .ReturnsAsync(sweets);
+
+            // Act
+            var result = await sweetsService.GetSweetsWithMinimumQty();
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal(2, result.Data.Count);
+        }
     }
 }
