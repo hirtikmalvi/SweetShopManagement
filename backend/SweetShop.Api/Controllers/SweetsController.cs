@@ -44,6 +44,14 @@ namespace SweetShop.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("sweets-with-minimum-qty")]
+        [Authorize]
+        public async Task<IActionResult> GetSweetsWithMinimumQty()
+        {
+            var result = await sweetsService.GetSweetsWithMinimumQty();
+            return Ok(result);
+        }
+
         [HttpGet("search")]
         [Authorize]
         public async Task<IActionResult> SearchSweets([FromBody] SweetSearchRequestDTO request)
