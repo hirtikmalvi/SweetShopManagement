@@ -98,5 +98,15 @@ namespace SweetShop.Api.Services.Implementations
             var deleted = await sweetsRepo.DeleteSweet(sweetId);
             return CustomResult<bool>.Ok(deleted, "Sweet deleted successfully.");
         }
+
+        public async Task<CustomResult<List<Sweet>>> GetSweetsWithMinimumQty()
+        {
+            var sweets = await sweetsRepo.GetSweetsWithMinimumQty();
+            if (sweets.Count == 0)
+            {
+                return CustomResult<List<Sweet>>.Ok(sweets, "No sweets exist.");
+            }
+            return CustomResult<List<Sweet>>.Ok(sweets, "Sweets fetched successfully.");
+        }
     }
 }

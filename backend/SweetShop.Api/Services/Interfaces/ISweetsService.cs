@@ -11,5 +11,6 @@ namespace SweetShop.Api.Services.Interfaces
         Task<CustomResult<List<Sweet>>> SearchSweets(SweetSearchRequestDTO request);
         Task<CustomResult<Sweet>> UpdateSweet(int sweetId, UpdateSweetRequestDTO request);
         Task<CustomResult<bool>> DeleteSweet(int sweetId);
+        Task<CustomResult<List<Sweet>>> GetSweetsWithMinimumQty();
     }
 }

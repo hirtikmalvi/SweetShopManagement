@@ -66,10 +66,15 @@ namespace SweetShop.Api.Repositories.Implementations
             var sweet = await context.Sweets.FirstOrDefaultAsync(s => s.SweetId == sweetId);
             return sweet;
         }
-
+        public async Task<List<Sweet>> GetSweetsWithMinimumQty()
+        {
+            var sweets = await context.Sweets.Where(s => s.QuantityInStock == context.Sweets.Min(ns => ns.QuantityInStock)).ToListAsync();
+            return sweets;
+        }
         private async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
         }
+
     }
 }
