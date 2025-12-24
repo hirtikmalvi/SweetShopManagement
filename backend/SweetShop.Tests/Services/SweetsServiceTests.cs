@@ -379,5 +379,22 @@ namespace SweetShop.Tests.Services
             Assert.Equal(403, result.StatusCode);
             Assert.Equal("Sweet can not be deleted.", result.Message);
         }
+
+        [Fact]
+        public async Task GetSweetsWithMinimumQty_ReturnsEmptyList_WhenNoSuchSweets()
+        {
+            // Arrange
+            sweetRepo.Setup(r => r.GetSweetsWithMinimumQty())
+                     .ReturnsAsync(new List<Sweet>());
+
+            // Act
+            var result = await sweetsService.GetSweetsWithMinimumQty();
+
+            // Assert
+            Assert.True(result.Success);
+            Assert.Equal(200, result.StatusCode);
+            Assert.NotNull(result.Data);
+            Assert.Equal(0, result.Data.Count);
+        }
     }
 }
